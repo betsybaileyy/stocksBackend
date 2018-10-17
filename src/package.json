@@ -43,6 +43,7 @@
     "MVC"
   ],
   "dependencies": {
+    "bcrypt": "^3.0.1",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "debug": "^2.4.5",
@@ -52,7 +53,7 @@
     "express-jwt": "5.3.1",
     "http-status": "1.0.1",
     "joi": "10.6.0",
-    "jsonwebtoken": "7.1.9",
+    "jsonwebtoken": "^7.1.9",
     "method-override": "^2.3.10",
     "mongoose": "4.7.4"
   },
