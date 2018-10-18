@@ -29,6 +29,16 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.post('/getuser', (req, res) => {
+  const token = req.body.token;
+  controller.getUser(token).then((user) => {
+    res.json({
+      user,
+      token
+    });
+  });
+});
+
 function logUserIn(res, user, type) {
   const token = jwt.sign({
     _id: user._id

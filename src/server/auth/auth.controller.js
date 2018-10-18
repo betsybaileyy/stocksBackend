@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 const db = require('../database/database.controller');
 const UserModel = require('../models/user');
 
-let curUser = null;
-
 function comparePassword(password, hashedPass) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hashedPass, (err, isMatch) => {
@@ -20,7 +18,7 @@ function comparePassword(password, hashedPass) {
 function getUser(token) {
   return new Promise((resolve, reject) => {
     let decodedToken = null;
-    if (token !== undefined && curUser === null) {
+    if (token !== undefined && token !== '') {
       decodedToken = jwt.decode(token);
       UserModel.findOne({
         _id: decodedToken._id
@@ -28,17 +26,13 @@ function getUser(token) {
         if (err) {
           reject(err);
         } else {
-          curUser = {
+          resolve({
             _id: resp._id,
             email: resp.email
-          };
-          resolve(curUser);
+          });
         }
       });
-    } else if (token !== undefined && curUser !== null) {
-      resolve(curUser);
     } else {
-      curUser = null;
       resolve(null);
     }
   });
