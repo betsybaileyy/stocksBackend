@@ -8,25 +8,31 @@ const router = express.Router(); // eslint-disable-line new-cap
 router.route('/');
 
 router.post('/signup', (req, res) => {
-  controller.signup(req.body).then((user) => {
-    logUserIn(res, user, 'signup');
-  }).catch((error) => {
-    res.json({
-      signup: 'fail',
-      error
+  controller
+    .signup(req.body)
+    .then((user) => {
+      logUserIn(res, user, 'signup');
+    })
+    .catch((error) => {
+      res.json({
+        signup: 'fail',
+        error
+      });
     });
-  });
 });
 
 router.post('/login', (req, res) => {
-  controller.login(req.body.email, req.body.password).then((user) => {
-    logUserIn(res, user, 'login');
-  }).catch((error) => {
-    res.json({
-      login: 'fail',
-      error
+  controller
+    .login(req.body.email, req.body.password)
+    .then((user) => {
+      logUserIn(res, user, 'login');
+    })
+    .catch((error) => {
+      res.json({
+        login: 'fail',
+        error
+      });
     });
-  });
 });
 
 router.post('/getuser', (req, res) => {
@@ -40,11 +46,15 @@ router.post('/getuser', (req, res) => {
 });
 
 function logUserIn(res, user, type) {
-  const token = jwt.sign({
-    _id: user._id
-  }, config.jwtSecret, {
-    expiresIn: '60 days'
-  });
+  const token = jwt.sign(
+    {
+      _id: user._id
+    },
+    config.jwtSecret,
+    {
+      expiresIn: '60 days'
+    }
+  );
   if (type === 'login') {
     res.json({
       login: 'success',

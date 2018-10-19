@@ -15,7 +15,13 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  menus: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Menu'
+    }
+  ]
 });
 
 // eslint-disable-next-line func-names
