@@ -1,10 +1,17 @@
 const iex = require('../iex/iex.controller');
 
-function getStockData(symbol, from, to) {
+function getStockData(symbol, from = 0, to = 0) {
   return new Promise((resolve, reject) => {
-    const dateFrom = Date.parse(from);
-    const dateTo = Date.parse(to);
-    const timeFrame = getTimeFrame(dateFrom);
+    let dateFrom = null;
+    let dateTo = null;
+    let timeFrame = null;
+    if (from !== 0 || to !== 0) {
+      dateFrom = Date.parse(from);
+      dateTo = Date.parse(to);
+      timeFrame = getTimeFrame(dateFrom);
+    } else {
+      timeFrame = 'ytd';
+    }
 
     iex
       .getStockHistory(symbol, timeFrame)
@@ -12,7 +19,11 @@ function getStockData(symbol, from, to) {
         const stocks = [];
         resp.forEach((data) => {
           const stockDate = Date.parse(data.date);
-          if (stockDate >= dateFrom && stockDate <= dateTo) {
+          if (timeFrame !== 'ytd') {
+            if (stockDate >= dateFrom && stockDate <= dateTo) {
+              stocks.push(data);
+            }
+          } else {
             stocks.push(data);
           }
         });
@@ -26,12 +37,14 @@ function getStockData(symbol, from, to) {
 
 function getStockRate(symbol, from, to) {
   return new Promise((resolve, reject) => {
-    getStockData(symbol, from, to).then((stockData) => {
-      const rate = stockData[0].close - stockData[stockData.length - 1].close;
-      resolve(rate);
-    }).catch((error) => {
-      reject(error);
-    });
+    getStockData(symbol, from, to)
+      .then((stockData) => {
+        const rate = stockData[0].close - stockData[stockData.length - 1].close;
+        resolve(rate);
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 }
 
