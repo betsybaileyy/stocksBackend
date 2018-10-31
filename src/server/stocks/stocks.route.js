@@ -5,9 +5,12 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/');
 
-router.get('/test', (req, res) => {
+router.get('/:symbol/:from/:to', (req, res) => {
+  const symbol = req.params.symbol;
+  const from = req.params.from;
+  const to = req.params.to;
   controller
-    .getStockRate('fb', '2017-09-13', '2018-09-14')
+    .getStockRate(symbol, from, to)
     .then((resp) => {
       res.json({
         resp
