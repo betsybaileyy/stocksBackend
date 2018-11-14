@@ -16,10 +16,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  menus: [
+  Investments: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Menu'
+      ref: 'Investment'
     }
   ]
 });

@@ -1,4 +1,4 @@
-const iex = require('../iex/iex.controller');
+const iex = require('./iex/iex.controller');
 
 function getSymbols() {
   return new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ function getSymbols() {
 
 function getStockData(symbol, from = null, to = null) {
   return new Promise((resolve, reject) => {
-    const dateFrom = from !== null ? Date.parse(from) : null;
+    const dateFrom = from !== null ? Date.parse(from) : 0;
     const dateTo = to !== null ? Date.parse(to) : Date.now();
     const timeFrame = from !== null ? getTimeFrame(dateFrom) : 'ytd';
 

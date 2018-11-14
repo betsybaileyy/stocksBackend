@@ -20,10 +20,10 @@ router.get('/symbols', (req, res) => {
     });
 });
 
-router.get('/:symbol/:from/:to', (req, res) => {
+router.get('/:symbol/:from/:to?', (req, res) => {
   const symbol = req.params.symbol;
-  const from = req.params.from;
-  const to = req.params.to;
+  const from = req.params.from ? req.params.from : null;
+  const to = req.params.to ? req.params.to : null;
   controller
     .getStockRate(symbol, from, to)
     .then((resp) => {
