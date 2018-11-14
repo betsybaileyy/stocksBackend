@@ -1,10 +1,23 @@
 const iex = require('../iex/iex.controller');
 
+function getSymbols() {
+  return new Promise((resolve, reject) => {
+    iex
+      .getSymbols()
+      .then((symbols) => {
+        resolve(symbols);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 function getStockData(symbol, from = null, to = null) {
   return new Promise((resolve, reject) => {
-    const dateFrom = (from !== null) ? Date.parse(from) : null;
-    const dateTo = (to !== null) ? Date.parse(to) : Date.now();
-    const timeFrame = (from !== null) ? getTimeFrame(dateFrom) : 'ytd';
+    const dateFrom = from !== null ? Date.parse(from) : null;
+    const dateTo = to !== null ? Date.parse(to) : Date.now();
+    const timeFrame = from !== null ? getTimeFrame(dateFrom) : 'ytd';
 
     iex
       .getStockHistory(symbol, timeFrame)
@@ -73,6 +86,7 @@ function getTimeFrame(from) {
 }
 
 module.exports = {
+  getSymbols,
   getStockData,
   getStockRate
 };

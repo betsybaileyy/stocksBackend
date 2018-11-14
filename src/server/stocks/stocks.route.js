@@ -5,6 +5,21 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/');
 
+router.get('/symbols', (req, res) => {
+  controller
+    .getSymbols()
+    .then((resp) => {
+      res.json({
+        resp
+      });
+    })
+    .catch((error) => {
+      res.json({
+        error
+      });
+    });
+});
+
 router.get('/:symbol/:from/:to', (req, res) => {
   const symbol = req.params.symbol;
   const from = req.params.from;
