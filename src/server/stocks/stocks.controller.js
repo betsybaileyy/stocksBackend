@@ -1,17 +1,10 @@
 const iex = require('../iex/iex.controller');
 
-function getStockData(symbol, from = 0, to = 0) {
+function getStockData(symbol, from = null, to = null) {
   return new Promise((resolve, reject) => {
-    let dateFrom = null;
-    let dateTo = null;
-    let timeFrame = null;
-    if (from !== 0 || to !== 0) {
-      dateFrom = Date.parse(from);
-      dateTo = Date.parse(to);
-      timeFrame = getTimeFrame(dateFrom);
-    } else {
-      timeFrame = 'ytd';
-    }
+    const dateFrom = (from !== null) ? Date.parse(from) : null;
+    const dateTo = (to !== null) ? Date.parse(to) : Date.now();
+    const timeFrame = (from !== null) ? getTimeFrame(dateFrom) : 'ytd';
 
     iex
       .getStockHistory(symbol, timeFrame)
@@ -39,8 +32,15 @@ function getStockRate(symbol, from, to) {
   return new Promise((resolve, reject) => {
     getStockData(symbol, from, to)
       .then((stockData) => {
-        const rate = stockData[0].close - stockData[stockData.length - 1].close;
-        resolve(rate);
+        const data = {};
+        data.profit = stockData[0].close - stockData[stockData.length - 1].close;
+        data.earliestDate = stockData[0].date;
+        data.latestDate = stockData[stockData.length - 1].date;
+        data.closings = [];
+        stockData.forEach((close) => {
+          data.closings.push([close.close, close.date]);
+        });
+        resolve(data);
       })
       .catch((error) => {
         reject(error);

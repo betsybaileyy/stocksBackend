@@ -5,10 +5,12 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/');
 
-router.get('/getdata/:symbol', (req, res) => {
+router.get('/:symbol/:from/:to', (req, res) => {
   const symbol = req.params.symbol;
+  const from = req.params.from;
+  const to = req.params.to;
   controller
-    .getStockData(symbol)
+    .getStockRate(symbol, from, to)
     .then((resp) => {
       res.json({
         resp
@@ -21,12 +23,10 @@ router.get('/getdata/:symbol', (req, res) => {
     });
 });
 
-router.get('/:symbol/:from/:to', (req, res) => {
+router.get('/:symbol', (req, res) => {
   const symbol = req.params.symbol;
-  const from = req.params.from;
-  const to = req.params.to;
   controller
-    .getStockRate(symbol, from, to)
+    .getStockData(symbol)
     .then((resp) => {
       res.json({
         resp
