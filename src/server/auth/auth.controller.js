@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../database/database.controller');
-const UserModel = require('../models/user');
+const UserModel = require('./user.model');
 
 function comparePassword(password, hashedPass) {
   return new Promise((resolve, reject) => {
