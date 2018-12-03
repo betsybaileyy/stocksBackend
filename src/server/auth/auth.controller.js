@@ -15,7 +15,8 @@ function comparePassword(password, hashedPass) {
   });
 }
 
-function getUser(token) {
+// TODO: create route for shortened user info vs full user info.
+function getUser(token, short = false) {
   return new Promise((resolve, reject) => {
     let decodedToken = null;
     if (token !== undefined && token !== '') {
@@ -27,11 +28,13 @@ function getUser(token) {
         (err, resp) => {
           if (err) {
             reject(err);
-          } else {
+          } else if (short) {
             resolve({
               _id: resp._id,
               email: resp.email
             });
+          } else {
+            resolve(resp);
           }
         }
       );

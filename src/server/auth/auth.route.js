@@ -35,8 +35,8 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.post('/getuser', (req, res) => {
-  const token = req.body.token;
+router.get('/getuser', (req, res) => {
+  const token = req.get('token');
   controller.getUser(token).then((user) => {
     res.json({
       user,
