@@ -16,7 +16,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  Investments: [
+  investments: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Investment'

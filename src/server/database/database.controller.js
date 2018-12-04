@@ -42,24 +42,44 @@ function save(newModel) {
   });
 }
 
-function del(model, id) {
+function update(model, object) {
   return new Promise((resolve, reject) => {
-    model.deleteOne({
-      _id: id
-    }, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
+    model.update(
+      {
+        _id: object._id
+      },
+      object,
+      (error, response) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(response);
       }
-    });
+    );
   });
 }
 
+function del(model, id) {
+  return new Promise((resolve, reject) => {
+    model.deleteOne(
+      {
+        _id: id
+      },
+      (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      }
+    );
+  });
+}
 
 module.exports = {
   getOne,
   getAll,
   save,
+  update,
   del
 };

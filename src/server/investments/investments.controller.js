@@ -1,4 +1,5 @@
 const Investment = require('./investment.model');
+const UserModel = require('../auth/user.model');
 
 const db = require('../database/database.controller');
 
@@ -10,13 +11,20 @@ function newInvestment(user, body) {
       // TODO: save investment to user model.
       db.save(investment)
         .then((model) => {
-          resolve(model);
+          user.investments.push(model._id);
+          db.update(UserModel, user)
+            .then(() => {
+              resolve(model);
+            })
+            .catch((userErr) => {
+              reject(userErr);
+            });
         })
         .catch((err) => {
           reject(err);
         });
     } else {
-      reject('No user provided.');
+      reject('Invalid User.');
     }
   });
 }
