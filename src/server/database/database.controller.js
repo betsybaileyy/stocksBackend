@@ -10,6 +10,21 @@ function getOne(model, id) {
   });
 }
 
+function getOnePop(model, id, populate) {
+  return new Promise((resolve, reject) => {
+    model
+      .findById(id)
+      .populate(populate)
+      .exec((error, response) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(response);
+        }
+      });
+  });
+}
+
 function getAll(model, search = {}) {
   return new Promise((resolve, reject) => {
     const query = search;
@@ -78,6 +93,7 @@ function del(model, id) {
 
 module.exports = {
   getOne,
+  getOnePop,
   getAll,
   save,
   update,

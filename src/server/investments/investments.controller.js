@@ -29,6 +29,17 @@ function newInvestment(user, body) {
   });
 }
 
+function getInvestment(id) {
+  return new Promise((resolve, reject) => {
+    db.getOnePop(Investment, id, 'investor').then((resp) => {
+      resolve(resp);
+    }).catch((dbErr) => {
+      reject(dbErr);
+    });
+  });
+}
+
 module.exports = {
-  newInvestment
+  newInvestment,
+  getInvestment
 };

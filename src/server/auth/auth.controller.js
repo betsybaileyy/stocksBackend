@@ -18,17 +18,11 @@ function comparePassword(password, hashedPass) {
 // TODO: create route for shortened user info vs full user info.
 function getUser(token, short = true) {
   return new Promise((resolve, reject) => {
-    let decodedToken = null;
     if (token !== undefined && token !== '') {
-      decodedToken = jwt.decode(token);
-      UserModel.findOne(
-        {
-          _id: decodedToken._id
-        },
-        (err, resp) => {
-          if (err) {
-            reject(err);
-          } else if (short) {
+      const decodedToken = jwt.decode(token);
+      db.getOnePop(UserModel, decodedToken._id, 'investments')
+        .then((resp) => {
+          if (short) {
             resolve({
               _id: resp._id,
               email: resp.email,
@@ -37,8 +31,10 @@ function getUser(token, short = true) {
           } else {
             resolve(resp);
           }
-        }
-      );
+        })
+        .catch((err) => {
+          reject(err);
+        });
     } else {
       resolve(null);
     }

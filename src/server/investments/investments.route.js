@@ -28,4 +28,17 @@ router.post('/new', (req, res) => {
   });
 });
 
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  controller.getInvestment(id).then((investment) => {
+    res.json({
+      investment
+    }).catch((error) => {
+      res.json({
+        error
+      });
+    });
+  });
+});
+
 module.exports = router;
