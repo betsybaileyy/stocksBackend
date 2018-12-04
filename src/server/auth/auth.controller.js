@@ -5,9 +5,9 @@ const UserModel = require('./user.model');
 
 function comparePassword(password, hashedPass) {
   return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hashedPass, (err, isMatch) => {
-      if (err) {
-        reject(err);
+    bcrypt.compare(password, hashedPass, (error, isMatch) => {
+      if (error) {
+        reject(error);
       } else {
         resolve(isMatch);
       }
@@ -47,9 +47,9 @@ function login(email, password) {
       {
         email
       },
-      (err, user) => {
-        if (err) {
-          reject(err);
+      (error, user) => {
+        if (error) {
+          reject(error);
         } else if (!user) {
           reject('incorrect');
         } else {
@@ -61,8 +61,8 @@ function login(email, password) {
                 reject('incorrect');
               }
             })
-            .catch((error) => {
-              reject(error);
+            .catch((err) => {
+              reject(err);
             });
         }
       }
