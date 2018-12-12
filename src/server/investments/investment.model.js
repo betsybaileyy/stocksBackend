@@ -7,13 +7,20 @@ const investmentSchema = new Schema({
     type: Date
   },
   invDate: {
-    type: Date
+    type: Date,
+    required: true
   },
   invAmount: {
-    type: Number
+    type: Number,
+    required: true
   },
   stocks: {
-    type: Number
+    type: Number,
+    required: true
+  },
+  symbol: {
+    type: String,
+    required: true
   },
   investor: {
     type: Schema.Types.ObjectId,
